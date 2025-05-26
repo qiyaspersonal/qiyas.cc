@@ -1,0 +1,572 @@
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCU AMS 360° Platform</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2.54cm;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            font-size: 12pt;
+            line-height: 1.5;
+            color: #000;
+            background: white;
+            margin: 0;
+            padding: 20px;
+            max-width: 21cm;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 18pt;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #1a365d;
+            border-bottom: 3px solid #2b6cb0;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2d3748;
+            margin: 25px 0 15px 0;
+            border-left: 4px solid #4299e1;
+            padding-left: 15px;
+            background: #f7fafc;
+            padding: 10px 15px;
+        }
+        
+        h3 {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #4a5568;
+            margin: 20px 0 10px 0;
+        }
+        
+        h4 {
+            font-size: 12pt;
+            font-weight: bold;
+            color: #718096;
+            margin: 15px 0 8px 0;
+        }
+        
+        p {
+            margin: 8px 0;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+        
+        li {
+            margin: 5px 0;
+        }
+        
+        .subtitle {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14pt;
+        }
+        
+        .section-break {
+            page-break-before: always;
+        }
+        
+        .highlight {
+            background: #fff5f5;
+            border-left: 4px solid #f56565;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        
+        .info-box {
+            background: #f0fff4;
+            border: 1px solid #68d391;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .download-btn {
+            background: #4299e1;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 20px auto;
+            display: block;
+            text-decoration: none;
+            text-align: center;
+            max-width: 200px;
+        }
+        
+        .download-btn:hover {
+            background: #3182ce;
+        }
+        
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .toc li {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .toc li:before {
+            content: "• ";
+            color: #4299e1;
+            font-weight: bold;
+        }
+        
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .download-btn {
+                display: none;
+            }
+            
+            h2 {
+                page-break-after: avoid;
+            }
+            
+            h3, h4 {
+                page-break-after: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>WESTERN CASPIAN UNIVERSITY – AKADEMİK İDARƏETMƏ SİSTEMİ (AMS) 360° PLATFORMASI</h1>
+    
+    <p class="subtitle">"Bir Universitet, Bir Platforma" Yanaşması ilə</p>
+    
+    <div class="toc">
+        <h3>MÖVZUlar</h3>
+        <ul>
+            <li>İstifadəçi Rol və Giriş Sistemi</li>
+            <li>Akademik Struktur və LMS</li>
+            <li>Tələbə Paneli</li>
+            <li>Müəllim Paneli</li>
+            <li>Dekanlıq / Rektorluq Paneli</li>
+            <li>Maliyyə və Ödəniş Sistemi</li>
+            <li>İnfrastruktur və İnteqrasiyalar</li>
+            <li>Əlavə Modullar</li>
+            <li>Mobil Tətbiq</li>
+            <li>Təhlükəsizlik və Backup</li>
+            <li>Çoxdillik Dəstək</li>
+            <li>İnki̇şaf Prosesi̇ Və Tələblər</li>
+        </ul>
+    </div>
+
+    <h2>1. İSTİFADƏÇİ ROL VƏ GİRİŞ SİSTEMİ</h2>
+
+    <h3>1.1. Rol və İcazə Növləri</h3>
+    <ul>
+        <li><strong>Admin (Super User)</strong> – Bütün sistemə tam çıxış</li>
+        <li><strong>Dekanlıq və Fakultə Koordinatorları</strong></li>
+        <li><strong>Müəllimlər və Asistentlər</strong></li>
+        <li><strong>Tələbələr</strong> (Bakalavr, Magistr, Doktorantura)</li>
+        <li><strong>İnzibati İşçilər</strong> (Maliyyə, İT, İnsan Resursları və s.)</li>
+        <li><strong>Starosta və nümayəndə rolları</strong></li>
+        <li><strong>Valideyn və sponsor girişi</strong> (yalnız baxış hüququ ilə)</li>
+    </ul>
+
+    <h3>1.2. Giriş və Təhlükəsizlik</h3>
+    <ul>
+        <li>2FA (SMS, Authenticator)</li>
+        <li>Biometrik dəstək (əlavə cihazlarda)</li>
+        <li>IP və cihaz əsaslı məhdudiyyətlər</li>
+        <li>OAuth/SSO (Google, Microsoft hesabları ilə giriş)</li>
+        <li>QR ilə giriş, mobil ID dəstəyi</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2>2. AKADEMİK STRUKTUR VƏ LMS</h2>
+
+    <h3>2.1. Kurs və Fənn Modulu</h3>
+    <ul>
+        <li>Qrup yaratma, bölmələrə ayırma (teoriya/laboratoriya)</li>
+        <li>Kredit sistemi, ECTS uyğunluğu</li>
+        <li>Ön şərtlər (prerequisite), əlaqəli fənlər</li>
+        <li>Fənn məqsədləri, nəticələri və rubrikası</li>
+        <li>Semestr planı + həftəlik syllabus görünüşü</li>
+    </ul>
+
+    <h3>2.2. Sinif və Qrup Sistemi</h3>
+    <ul>
+        <li>Avtomatik tələbə təyinatı</li>
+        <li>Multi-şöbə dəstəyi (çarpaz kurslar)</li>
+        <li>Fərdi və kollektiv tapşırıqlar</li>
+        <li>Virtual dərs otaqları (inteqrasiya: Zoom, Google Meet)</li>
+    </ul>
+
+    <h3>2.3. Tapşırıq və Qiymətləndirmə</h3>
+    <ul>
+        <li>Rubrika əsaslı qiymətləndirmə modulu</li>
+        <li>Plagiat yoxlama inteqrasiyası (Turnitin və ya daxili AI)</li>
+        <li>Onlayn imtahan sistemi: vaxt limiti, kamera nəzarəti (TestGorilla alternativi daxili mexanizma)</li>
+        <li>Avtomatik yoxlanılan testlər və açıq suallar</li>
+    </ul>
+
+    <h3>2.4. Resurs Paylaşımı</h3>
+    <ul>
+        <li>Video dərsliklər, PDF, Word, interaktiv materiallar</li>
+        <li>Versiya kontrolu, müəllif hüququ qorunması</li>
+        <li>Şərh sistemi, annotasiya, qrup müzakirələri</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2>3. TƏLƏBƏ PANELİ (MOBILE + DESKTOP)</h2>
+
+    <h3>3.1. Şəxsi Panel</h3>
+    <ul>
+        <li>Gündəlik dərs cədvəli</li>
+        <li>Qiymətlər, nəticələr, GPA hesablaması</li>
+        <li>İştirakçılıq və gecikmə tarixçəsi</li>
+        <li>Təhsil haqqı balansı və ödəniş statusu</li>
+        <li>Sertifikatlar, transkriptlər</li>
+    </ul>
+
+    <h3>3.2. Əlavə Xidmətlərə Çıxış</h3>
+    <ul>
+        <li>Kitabxana sistemi və resurs sifarişi</li>
+        <li>Klub üzvlüyü və tədbir qeydiyyatları</li>
+        <li>Psixoloji və akademik məsləhət üçün müraciət</li>
+        <li>Mentor/Müəllimə yazılma</li>
+    </ul>
+
+    <h2>4. MÜƏLLİM PANELİ</h2>
+
+    <h3>4.1. Kurs İdarəetməsi</h3>
+    <ul>
+        <li>Syllabus redaktəsi</li>
+        <li>Tapşırıqların və testlərin yerləşdirilməsi</li>
+        <li>Diskussiya forumları və cavablar</li>
+        <li>Tələbə fəaliyyətinin izlənməsi (AI dəstəyi ilə)</li>
+    </ul>
+
+    <h3>4.2. Qiymətləndirmə və Hesabatlar</h3>
+    <ul>
+        <li>Rubrika seçimi</li>
+        <li>Fərdi rəy və şərhlər</li>
+        <li>Aylıq və semestr sonu hesabatlar</li>
+        <li>Qrafik göstəricilərlə tələbə performansı</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2>5. DEKANLIQ / REKTORLUQ PANELİ</h2>
+
+    <h3>5.1. Akademik Planlama</h3>
+    <ul>
+        <li>Qrupların fakültələrə təyinatı</li>
+        <li>Kadr planlaması: müəllimlər, qrup sayları</li>
+        <li>Mövcud fənnlərin tələbə sayı, doluluq statusu</li>
+    </ul>
+
+    <h3>5.2. Elan və Yönləndirmə Sistemi</h3>
+    <ul>
+        <li>Şöbə, kurs, qrup, fakültə və universitet səviyyəsində elanlar</li>
+        <li>Bildirişə tələbə tərəfindən "oxundu" təsdiqi</li>
+        <li>Təcili xəbərdarlıqlar üçün PIN/POP-UP rejimi</li>
+    </ul>
+
+    <h3>5.3. Analitika</h3>
+    <ul>
+        <li>Tələbə axını, imtahan nəticələri, GPA bölgüsü</li>
+        <li>Müəllim fəaliyyəti, dərs yükü</li>
+        <li>Maliyyə statistikası və fakültə büdcələri</li>
+    </ul>
+
+    <h2>6. MALİYYƏ VƏ ÖDƏNİŞ SİSTEMİ</h2>
+
+    <h3>6.1. Ödəniş Sistemi</h3>
+    <ul>
+        <li>Təhsil haqqı, əlavə kurs, imtahan və s. ödənişləri</li>
+        <li>Gecikmə cərimələri və ödəniş təqvimi</li>
+        <li>Online ödəniş: Visa/MasterCard, PayPal, lokal sistemlər (Turan, MilliÖn)</li>
+    </ul>
+
+    <h3>6.2. Maaş və Büdcə Modulu</h3>
+    <ul>
+        <li>Maaş hesabatları (vergi, bonus, gecikmə)</li>
+        <li>Fakültə büdcəsi idarəsi</li>
+        <li>Şəxsi maliyyə paneli (işçilər üçün)</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2>7. İNFRASRUKTUR VƏ İNTEQRASİYALAR</h2>
+
+    <h3>7.1. API Sistemi</h3>
+    <ul>
+        <li>Mobil tətbiqlər, chatbot, ödəniş və kitabxana üçün API</li>
+        <li>Swagger ilə sənədləşdirmə</li>
+        <li>Token əsaslı autentifikasiya</li>
+    </ul>
+
+    <h3>7.2. LMS Daxili Arxitektura</h3>
+    <ul>
+        <li>Moodle və digər LMS-lərdən asılı olmayan sistem</li>
+        <li>Modul əsaslı inkişaf</li>
+        <li>Tədris növlərinə uyğun variantlar: klassik, distant, qarışıq</li>
+    </ul>
+
+    <h3>7.3. Kitabxana Sistemi</h3>
+    <ul>
+        <li>Elektron resurslara giriş (ScienceDirect, JSTOR, və s.)</li>
+        <li>Kitab sifarişi, rezervasiya və tarixçəsi</li>
+        <li>Oxucu bileti və istifadə statistikası</li>
+    </ul>
+
+    <h2>8. ƏLAVƏ MODULLAR</h2>
+
+    <h3>8.1. Klub və İcma Paneli</h3>
+    <ul>
+        <li>Klub qeydiyyatı, idarə heyəti təyinatı</li>
+        <li>Tədbir təqvimi, iştirak statistikası</li>
+        <li>Üzvlük sistemi və geymfikasiya (badge, level)</li>
+    </ul>
+
+    <h3>8.2. İdman və Sosial Mərkəzlər</h3>
+    <ul>
+        <li>İdman zalı rezervasiyası</li>
+        <li>Tədbir qeydiyyatı və giriş sistemi</li>
+        <li>İnventar idarəsi (forma, avadanlıq, istifadə müddəti)</li>
+    </ul>
+
+    <h3>8.3. Psixoloji və Akademik Dəstək</h3>
+    <ul>
+        <li>Müraciət formaları</li>
+        <li>Rahat təqvimlə görüş sifarişi</li>
+        <li>Məxfi məzmun qoruması</li>
+    </ul>
+
+    <h3>8.4. AI Dəstəyi və Chatbot</h3>
+    <ul>
+        <li>Tələbələr üçün dərslikləri başa düşməkdə kömək</li>
+        <li>Adminlərə tez-tez verilən suallarda yönləndirmə</li>
+        <li>Müəllimlər üçün qiymətləndirmə təklifi və plagiat analizi</li>
+    </ul>
+
+    <div class="section-break"></div>
+
+    <h2>9. MOBİL TƏTBİQ</h2>
+    <ul>
+        <li>Android və iOS dəstəyi</li>
+        <li>Offline rejim (bəzi funksiyalar)</li>
+        <li>Kamera ilə QR skan</li>
+        <li>Push notification inteqrasiyası</li>
+        <li>Biometrik giriş</li>
+    </ul>
+
+    <h2>10. TƏHLÜKƏSİZLİK VƏ BACKUP</h2>
+    <ul>
+        <li>Gündəlik backup (AWS, Azure, lokal)</li>
+        <li>Aktiv sessiyaların izlənməsi</li>
+        <li>Təhlükəsizlik skanları (DAST + pentestlər)</li>
+        <li>GDPR uyğun datanın silinməsi</li>
+        <li>Audit jurnal (hər klik qeyd olunur)</li>
+    </ul>
+
+    <h2>11. ÇOXDİLLİK DƏSTƏK</h2>
+    <ul>
+        <li>Azərbaycan, İngilis, Rus dilləri</li>
+        <li>Fakültə və istifadəçiyə görə dil seçimi</li>
+        <li>Məzmunlara lokallaşdırma</li>
+    </ul>
+
+    <div class="info-box">
+        <h4>📋 Qeyd:</h4>
+        <p>Bu sənəd Western Caspian University AMS 360° platformasının ətraflı texniki təsviridir. Bütün modullar və funksionallıqlar universitetin ehtiyaclarına uyğun olaraq konfiqurasiya edilə bilər.</p>
+    </div>
+
+    <!-- New Content Starts Here -->
+    <div class="section-break"></div>
+
+    <h2>12. İNKİŞAF PROSESİ VƏ TƏLƏBLƏR</h2>
+
+    <h3>12.1. Proses Üçün Lazım Olan Resurslar</h3>
+    
+    <div class="highlight">
+        <h4>Şəffaflıq və Təhlükəsizlik Tədbirləri</h4>
+        <ul>
+            <li><strong>Mərkəzləşdirilmiş İnkişaf Mühiti:</strong> Bütün proqram təminatının inkişafı və test mərhələləri universitet daxilində qurulmuş serverlərdə həyata keçiriləcək. Bu, məlumatların təhlükəsizliyini və şəffaflığı təmin edəcək.</li>
+            <li><strong>Fiziki İş Mühiti:</strong> İnkişaf komandası üçün universitet daxilində xüsusi iş otaqları təşkil ediləcək, burada bütün infrastruktur (yüksək sürətli internet, serverlər, test cihazları) təmin olunacaq.</li>
+            <li><strong>Məlumat Çıxışının Qarşısının Alınması:</strong> Bütün məlumatlar universitet daxilində saxlanılacaq, bulud xidmətləri yalnız şifrələnmiş formada və xüsusi icazələr əsasında istifadə edilə bilər.</li>
+        </ul>
+    </div>
+
+    <div class="highlight">
+        <h4>Komanda Formalaşdırılması</h4>
+        <ul>
+            <li><strong>Dizayn Komandası:</strong> UX/UI dizaynerlər (2 nəfər) - sistemin istifadəçi interfeysinin hazırlanması və istifadəçi təcrübəsinin yaxşılaşdırılması üçün</li>
+            <li><strong>Projekt Meneceri:</strong> Təcrübəli PMP sertifikatlı menecer - bütün prosesin planlaşdırılması və koordinasiyası üçün</li>
+            <li><strong>Əlavə Proqramçılar:</strong> Front-end (React.js) və back-end (Node.js/.NET) developerlər - sistemin müxtəlif modullarının hazırlanması üçün</li>
+            <li><strong>QA Mütəxəssisləri:</strong> 2 nəfər test mühəndisi - sistemin səhvsiz işləməsini təmin etmək üçün</li>
+        </ul>
+    </div>
+
+    <div class="highlight">
+        <h4>İnzibati Strukturun Təşkili</h4>
+        <ul>
+            <li><strong>İnformasiya Texnologiyaları Şöbəsinin Aktivləşdirilməsi:</strong> 
+                <ul>
+                    <li>Mövcud şöbənin genişləndirilməsi və xüsusi AMS komandasının yaradılması</li>
+                    <li>Hər fakültədən 1 nəfər koordinatorun təyin edilməsi (keçid mərhələsi üçün)</li>
+                    <li>Həftəlik status görüşlərini təşkil etmək üçün iş qrupu</li>
+                </ul>
+            </li>
+            <li><strong>Nəzarət Mexanizmləri:</strong>
+                <ul>
+                    <li>Hər həftə rektor müavini üçün hesabatların hazırlanması</li>
+                    <li>Aylıq demo versiyaların universitet rəhbərliyinə təqdim edilməsi</li>
+                    <li>Prioritetlərin müəyyən edilməsi üçün rəhbərliklə aylıq yığıncaqlar</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <h3>12.2. İcra Təqvimi və Deadline-lar</h3>
+    
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <thead>
+            <tr style="background-color: #f7fafc;">
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Mərhələ</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Müddət</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Əhatə etdiyi Funksionallıq</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Nəticə</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">İlkin Mərhələ</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">1-3 ay</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    <ul>
+                        <li>Əsas istifadəçi giriş və rollar sistemi</li>
+                        <li>Tələbə və müəllim panellərinin əsas funksiyaları</li>
+                        <li>Qrup idarəetmə sisteminin əsasları</li>
+                        <li>Əsas qiymətləndirmə modulu</li>
+                    </ul>
+                </td>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    Sistemin beta versiyasının hazırlanması və 1 fakültədə pilot testlərin keçirilməsi
+                </td>
+            </tr>
+            <tr style="background-color: #f9f9f9;">
+                <td style="border: 1px solid #ddd; padding: 8px;">İkinci Mərhələ</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">4-6 ay</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    <ul>
+                        <li>Dekanlıq/rektorluq panelinin tam hazırlanması</li>
+                        <li>Maliyyə modulunun inteqrasiyası</li>
+                        <li>Əlavə modullar (kitabxana, klub, idman)</li>
+                        <li>Mobil tətbiqin hazırlanması</li>
+                        <li>Analitika və hesabat modulunun tamamlanması</li>
+                    </ul>
+                </td>
+                <td style="border: 1px solid #ddd; padding: 8px;">
+                    Bütün universitet üçün tam funksional sistemin tətbiqi və bütün fakültələrdə istifadəyə verilməsi
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="info-box">
+        <h4>⚠️ ƏHƏMİYYƏTLİ QEYDLƏR:</h4>
+        <ul>
+            <li>Hər mərhələnin sonunda detallı testlər və istifadəçi geri bildirim sessiyaları keçiriləcək.</li>
+            <li>Deadline-lar komandanın tam formalaşdırılması və bütün lazımi resursların təmin edilməsi şərtilə qüvvədədir.</li>
+            <li>Prioritetlər universitet rəhbərliyi ilə müzakirə edilərək dəyişdirilə bilər.</li>
+            <li>6 aylık dövrdən sonra sistemin dəstək və təkmilləşdirmə mərhələsi başlayacaq.</li>
+        </ul>
+    </div>
+
+    <script>
+        function downloadAsDocx() {
+            // Create a more comprehensive HTML structure for Word conversion
+            const docContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WCU AMS 360° Platform</title>
+    <style>
+        body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.5; }
+        h1 { font-size: 18pt; text-align: center; font-weight: bold; }
+        h2 { font-size: 16pt; font-weight: bold; color: #2d3748; }
+        h3 { font-size: 14pt; font-weight: bold; color: #4a5568; }
+        p { margin: 8px 0; }
+        ul { margin: 10px 0; padding-left: 25px; }
+        li { margin: 5px 0; }
+    </style>
+</head>
+<body>
+${document.body.innerHTML.replace(/<button[^>]*>.*?<\/button>/g, '')}
+</body>
+</html>`;
+
+            const blob = new Blob([docContent], {
+                type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            });
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'WCU_AMS_360_Platform.docx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Alternative method - create HTML file that can be opened in Word
+            const htmlBlob = new Blob([docContent], { type: 'text/html' });
+            const htmlUrl = URL.createObjectURL(htmlBlob);
+            const htmlLink = document.createElement('a');
+            htmlLink.href = htmlUrl;
+            htmlLink.download = 'WCU_AMS_360_Platform.html';
+            document.body.appendChild(htmlLink);
+            htmlLink.click();
+            document.body.removeChild(htmlLink);
+            URL.revokeObjectURL(htmlUrl);
+            
+            alert('Sənəd HTML formatında yükləndi. Microsoft Word ilə açaraq DOCX olaraq saxlaya bilərsiniz.');
+        }
+
+        // Auto-generate table of contents
+        document.addEventListener('DOMContentLoah
