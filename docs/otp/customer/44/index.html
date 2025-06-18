@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SMS API Documentation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 2rem;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    code {
+      background: #eee;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 1rem;
+      border-left: 4px solid #3498db;
+      overflow-x: auto;
+    }
+    .note {
+      background-color: #fff3cd;
+      padding: 1rem;
+      border-left: 5px solid #ffbf00;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📨 SMS API Integration Guide</h1>
+
+  <p>
+    This document describes how to send SMS messages via the <code>https://api.sms-gate.app/3rdparty/v1/message</code> endpoint.
+  </p>
+
+  <h2>🔐 Authentication</h2>
+
+  <div class="note">
+    <strong>Important:</strong> The <code>username</code> and <code>password</code> used for this request are securely embedded within the APK (mobile app). Users should not attempt to change or replace these credentials. Each user will only be able to use the credentials specifically assigned to them.
+  </div>
+
+  <p>
+    Authentication is handled using <strong>HTTP Basic Auth</strong>. You will pass the username and password in the request using the <code>-u</code> flag in cURL or the appropriate method in your language of choice.
+  </p>
+
+  <h2>🛠️ Endpoint Details</h2>
+
+  <ul>
+    <li><strong>Method:</strong> <code>POST</code></li>
+    <li><strong>URL:</strong> <code>https://api.sms-gate.app/3rdparty/v1/message</code></li>
+    <li><strong>Content-Type:</strong> <code>application/json</code></li>
+  </ul>
+
+  <h3>📥 Request Body</h3>
+
+  <p>The request body must be in JSON format and include the following parameters:</p>
+
+  <ul>
+    <li><code>message</code>: The content of the SMS to be sent.</li>
+    <li><code>phoneNumbers</code>: A list of recipient phone numbers (in international format, e.g., <code>+994...</code>).</li>
+  </ul>
+
+  <pre><code>{
+  "message": "Hello! This is a test message.",
+  "phoneNumbers": ["+994505005050", "+994555555555"]
+}</code></pre>
+
+  <h2>📦 Example Requests</h2>
+
+  <h3>🌀 cURL</h3>
+  <pre><code>curl -X POST -u &lt;username&gt;:&lt;password&gt; \
+  -H "Content-Type: application/json" \
+  -d '{
+    "message": "Hello from API!",
+    "phoneNumbers": ["+994505005050", "+994555555555"]
+  }' \
+  https://api.sms-gate.app/3rdparty/v1/message
+</code></pre>
+
+  <h3>🐍 Python (using requests)</h3>
+  <pre><code>import requests
+from requests.auth import HTTPBasicAuth
+
+url = "https://api.sms-gate.app/3rdparty/v1/message"
+payload = {
+    "message": "Hello from Python!",
+    "phoneNumbers": ["+994505005050", "+994555555555"]
+}
+auth = HTTPBasicAuth("your_username", "your_password")
+
+response = requests.post(url, json=payload, auth=auth)
+
+print(response.status_code)
+print(response.json())</code></pre>
+
+  <h3>🟨 JavaScript (Fetch API)</h3>
+  <pre><code>const url = "https://api.sms-gate.app/3rdparty/v1/message";
+const data = {
+  message: "Hello from JavaScript!",
+  phoneNumbers: ["+994505005050", "+994555555555"]
+};
+
+fetch(url, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": "Basic " + btoa("your_username:your_password")
+  },
+  body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(result => console.log(result))
+.catch(error => console.error("Error:", error));
+</code></pre>
+
+  <h2>📎 Notes</h2>
+  <ul>
+    <li>Phone numbers must be in international format, including the <code>+</code> sign and country code.</li>
+    <li>The <code>message</code> field can contain plain text (Unicode supported).</li>
+    <li>There is no maximum phone number limit per request, but keep payloads reasonable for performance.</li>
+    <li>Ensure the API endpoint is accessible from your environment (some networks or firewalls may block requests).</li>
+  </ul>
+
+  <div class="note">
+    <strong>Reminder:</strong> You are only allowed to use the credentials assigned to you. They are pre-configured in the application and should not be altered or distributed.
+  </div>
+
+</body>
+</html>
