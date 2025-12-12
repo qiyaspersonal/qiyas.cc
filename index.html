@@ -2,183 +2,604 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qiyas Sadıqov CC - Profile</title>
-    <link rel="icon" type="image/svg+xml" href="https://svgl.app/library/qwik.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Primary Meta Tags -->
+    <title>Qiyas Sadiqov | Technical Product Manager</title>
+    <meta name="title" content="Qiyas Sadiqov | Technical Product Manager & Project Manager">
+    <meta name="description" content="Interactive terminal-based portfolio of Qiyas Sadiqov. Explore projects, skills, and contact info via command line interface. Technical Product Manager specializing in Agile methodologies and Product Strategy.">
+    <meta name="keywords" content="Qiyas Sadiqov, Technical Product Manager, Project Manager, TPM, Product Owner, Agile, Scrum, Jira, CLI Website, Interactive Resume">
+    <meta name="author" content="Qiyas Sadiqov">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#050505">
+
+    <!-- Open Graph / Facebook / LinkedIn / Discord -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://qiyas.cc/">
+    <meta property="og:title" content="Qiyas Sadiqov | Technical Product Manager">
+    <meta property="og:description" content="Access granted. Type commands to explore the interactive portfolio of Qiyas Sadiqov, Technical Product Manager.">
+    <meta property="og:image" content="https://qiyas.cc/assets/og-image.jpg"> <!-- Replace with actual image URL -->
+    <meta property="og:site_name" content="Qiyas.cc">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://qiyas.cc/">
+    <meta property="twitter:title" content="Qiyas Sadiqov | Technical Product Manager">
+    <meta property="twitter:description" content="Interactive terminal interface. Type commands to view skills and projects.">
+    <meta property="twitter:image" content="https://qiyas.cc/assets/og-image.jpg"> <!-- Replace with actual image URL -->
+    <meta property="twitter:creator" content="@qiyas_sadiqov">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://qiyas.cc/">
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --accent: #FF7043;         /* Main Accent Color (Orange) */
+            --bg-color: #050505;       /* Background (Near Black) */
+            --term-bg: #0E0E0E;        /* Terminal Background */
+            --border: #333333;         /* Borders */
+            --text-main: #EAEAEA;
+            --text-muted: #888888;
+            
+            /* Status Colors */
+            --blue: #60A5FA;
+            --green: #4ADE80;
+            --yellow: #FBBF24;
+            --red: #F87171;
+        }
+
         * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        }
-        
-        body {
-            background-color: black;
-            color: white;
+            height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 1rem;
-        }
-        
-        .profile-card {
-            width: 100%;
-            max-width: 400px;
-            border: 2px solid white;
-            border-radius: 0.5rem;
-            box-shadow: 0 10px 15px -3px rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-            background-color: black;
+            justify-content: center;
             overflow: hidden;
+            
+            /* Subtle Grid Background */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
         }
-        
-        .profile-card:hover {
-            box-shadow: 0 20px 25px -5px rgba(255, 255, 255, 0.1);
-        }
-        
-        .card-content {
-            padding: 1.5rem;
+
+        /* TERMINAL WINDOW */
+        .terminal-window {
+            width: 85%;
+            max-width: 900px;
+            height: 600px;
+            background-color: var(--term-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            
+            /* Cinematic Shadow */
+            box-shadow: 
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 50px 100px -20px rgba(0, 0, 0, 0.7), 
+                0 30px 60px -30px rgba(0, 0, 0, 0.8);
+            
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
+            position: relative;
+            z-index: 10;
         }
-        
-        .avatar {
-            width: 128px;
-            height: 128px;
-            border-radius: 50%;
-            border: 2px solid white;
-            overflow: hidden;
-        }
-        
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .name-title {
-            text-align: center;
-        }
-        
-        .name {
-            font-size: 1.875rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-        }
-        
-        .surname {
-            color: #a0a0a0;
-        }
-        
-        .title {
-            font-size: 1.125rem;
-            color: #a0a0a0;
-            margin-top: 0.5rem;
-        }
-        
-        .quote-container {
+
+        /* Window Bar */
+        .window-bar {
+            background-color: #161616;
+            padding: 14px 18px;
             display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            border-radius: 12px 12px 0 0;
+            user-select: none;
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .red { background-color: #FF5F56; box-shadow: 0 0 10px rgba(255, 95, 86, 0.4); }
+        .yellow { background-color: #FEBC2E; box-shadow: 0 0 10px rgba(254, 188, 46, 0.4); }
+        .green { background-color: #28C840; box-shadow: 0 0 10px rgba(40, 200, 64, 0.4); }
+
+        .window-title {
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transform: translateX(-26px);
+            opacity: 0.8;
+        }
+
+        /* Content Area */
+        .terminal-body {
+            flex: 1;
+            padding: 24px 30px;
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-y: auto;
+            color: var(--text-main);
+        }
+
+        .terminal-body::-webkit-scrollbar { width: 6px; }
+        .terminal-body::-webkit-scrollbar-track { background: transparent; }
+        .terminal-body::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* Line Styles */
+        .line {
+            margin-bottom: 8px;
+            display: flex;
+            flex-wrap: wrap;
             align-items: flex-start;
-            gap: 0.5rem;
-            background-color: #1f1f1f;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            width: 100%;
+        }
+
+        .ts { 
+            color: var(--text-muted); 
+            margin-right: 14px; 
+            font-size: 0.85em; 
+            opacity: 0.6;
+            min-width: 60px;
+        }
+
+        .content-text {
+            flex: 1;
         }
         
-        .quote-icon {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            margin-top: 0.25rem;
-            color: #a0a0a0;
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            font-weight: 700;
+            margin-right: 12px;
+            min-width: 65px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            transform: translateY(-1px);
         }
-        
-        .quote {
-            font-size: 0.875rem;
-            font-style: italic;
-            color: #d4d4d4;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            padding-top: 0.5rem;
-        }
-        
-        .social-button {
+
+        .badge-info { background: rgba(96, 165, 250, 0.1); color: var(--blue); border: 1px solid rgba(96, 165, 250, 0.2); }
+        .badge-success { background: rgba(74, 222, 128, 0.1); color: var(--green); border: 1px solid rgba(74, 222, 128, 0.2); }
+        .badge-warn { background: rgba(251, 191, 36, 0.1); color: var(--yellow); border: 1px solid rgba(251, 191, 36, 0.2); }
+        .badge-error { background: rgba(248, 113, 113, 0.1); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.2); }
+
+        /* Text Colors */
+        .cmd-keyword { color: var(--accent); font-weight: bold; }
+        .path { color: var(--blue); text-decoration: underline; cursor: pointer; text-decoration-style: dotted; }
+        .dim { color: var(--text-muted); }
+        .highlight-text { color: #fff; font-weight: 600; }
+
+        /* Input Area */
+        .input-line {
             display: flex;
             align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid white;
-            background-color: black;
-            color: white;
-            transition: background-color 0.2s ease;
+            width: 100%;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .prompt {
+            color: var(--green);
+            font-weight: 700;
+            margin-right: 12px;
         }
         
-        .social-button:hover {
-            background-color: #1f1f1f;
+        .prompt span { color: var(--blue); }
+
+        #cmd-input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            flex-grow: 1;
+            outline: none;
+            caret-color: var(--accent);
+            padding: 0;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* ASCII Art Styling */
+        .ascii-art {
+            font-size: 10px;
+            line-height: 10px;
+            white-space: pre;
+            color: var(--text-muted);
+            font-weight: 700;
+            margin: 10px 0;
+            font-family: 'Courier New', Courier, monospace; /* Monospace is crucial */
+        }
+
+        /* Links */
+        a {
+            color: var(--text-main);
+            text-decoration: none;
+            border-bottom: 1px solid var(--text-muted);
+            transition: all 0.2s;
+        }
+        a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
         }
         
-        .social-icon {
-            width: 20px;
-            height: 20px;
+        /* Mobile adjustment */
+        @media (max-width: 600px) {
+            .terminal-window { width: 95%; height: 80vh; }
+            .ts { display: none; }
+            .window-title { display: none; }
+            .ascii-art { font-size: 6px; line-height: 6px; } /* Smaller art on mobile */
         }
+
     </style>
 </head>
 <body>
-    <div class="profile-card">
-        <div class="card-content">
-            <!-- Profile Image -->
-            <div class="avatar">
-                <img src="https://envs.sh/Kok.jpg" alt="Qoyas Sadıqov CC">
+
+    <div class="terminal-window" onclick="focusInput()">
+        <div class="window-bar">
+            <div class="dots">
+                <div class="dot red"></div>
+                <div class="dot yellow"></div>
+                <div class="dot green"></div>
             </div>
-            
-            <!-- Name and Title -->
-            <div class="name-title">
-                <h1 class="name">Qiyas Sadıqov <span class="surname">CC</span></h1>
-                <p class="title">Product Manager | Researcher | Y. Entrepreneur</p>
-            </div>
-            
-            <!-- Quote -->
-            <div class="quote-container">
-                <svg class="quote-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
-                    <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
-                </svg>
-                <p class="quote">🪖 It started when an alien device did what it did. ^_-</p>
-            </div>
-            
-            <!-- Social Links -->
-            <div class="social-links">
-                <a href="https://link.qiyas.cc/#linkedin/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile" class="social-button">
-                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                        <rect x="2" y="9" width="4" height="12"></rect>
-                        <circle cx="4" cy="4" r="2"></circle>
-                    </svg>
-                </a>
-                <a href="https://link.qiyas.cc/#instagram/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile" class="social-button">
-                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                </a>
-                <a href="https://link.qiyas.cc/#github/" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" class="social-button">
-                    <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                    </svg>
-                </a>
-            </div>
+            <div class="window-title">qiyas.cc — interactive shell</div>
+        </div>
+        
+        <div class="terminal-body" id="terminal">
+            <!-- Dynamic Content -->
         </div>
     </div>
+
+    <script>
+        const terminalBody = document.getElementById('terminal');
+        const inputContainerId = 'input-container';
+
+        // --- CENTRALIZED DATA STORE ---
+        // Edit this object to change all content on the site
+        const DATA = {
+            config: {
+                username: "visitor",
+                hostname: "qiyas.cc",
+                systemName: "Qiyas.cc Interface v2.3",
+                role: "Technical Product Manager"
+            },
+            help: [
+                { cmd: 'q --help', desc: 'List available commands' },
+                { cmd: 'q about', desc: 'About Qiyas Sadiqov' },
+                { cmd: 'q skills', desc: 'Core competencies & tools' },
+                { cmd: 'q projects', desc: 'Managed projects & portfolio' },
+                { cmd: 'q social', desc: 'Social media links' },
+                { cmd: 'q contact', desc: 'Contact information' },
+                { cmd: 'q --visualize', desc: 'Display user avatar (ASCII)' },
+                { cmd: 'addcommand', desc: 'Create custom command' },
+                { cmd: 'clear', desc: 'Clear terminal' }
+            ],
+            about: [
+                "I am Qiyas, a Technical Product Manager focused on product strategy and workflow optimization.",
+                "I bridge the gap between technical teams and business stakeholders, ensuring smooth delivery."
+            ],
+            skills: [
+                { category: 'Product', items: 'Product Strategy, Roadmap Planning, Agile/Scrum, User Research' },
+                { category: 'Tech', items: 'API Design, SQL, System Architecture, Python, JavaScript' },
+                { category: 'Tools', items: 'Jira, Linear, Figma, Docker, Notion, Postman' }
+            ],
+            projects: [
+                { 
+                    title: "SaaS Dashboard Revamp", 
+                    desc: "Led product redesign & migration to modern stack.", 
+                    link: "#" 
+                },
+                { 
+                    title: "E-Commerce API Integration", 
+                    desc: "Managed technical integration with 3rd party logistics.", 
+                    link: "#" 
+                },
+                { 
+                    title: "vCode Agent Clone", 
+                    desc: "Interactive Terminal Concept for Portfolio.", 
+                    link: "#" 
+                }
+            ],
+            social: [
+                { platform: "GitHub", link: "https://github.com/qiyas", username: "github.com/qiyas" },
+                { platform: "Twitter", link: "https://twitter.com/qiyas_sadiqov", username: "twitter.com/qiyas_sadiqov" },
+                { platform: "LinkedIn", link: "#", username: "linkedin.com/in/qiyas" }
+            ],
+            contact: {
+                email: "contact@qiyas.cc"
+            },
+            asciiArt: `
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::------------------------
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-:--::::--:------------------
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::-------------
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::-::::::::::::::::::::::::::::::-------------
+:::::::::::::::::::.::::::::::::::::::::::::::--::-=+=----------:::::::::::::::::::::::::-----------
+:::.::::::::::::::::::::::::::::::::::::-==+======****++++++======--::::::::::::::::::::------------
+:......::::::::::::.:::::::::::::::::::-=+*********########**+++++==---:::::::::::::::::----:-------
+:::....::.::::::::..:::::::::::::::::----=**#############%%%##*#*++==--::::::::::::::::::-::-:------
+..::.....::::::::::.::::::::::::::::-=++**####%%%%%%%%%%%%%%%%%##**+=--::::::::::::::::::-::::::--:-
+::::::.:::::..:::::::::::::::::::::=++*#####%%%%%%%%%%%%%%%%%%%%%#*++=--::::::::::::::::::::::::::::
+:..:....::::::::::..::::::::::::::=+**##########%%%%%%%%%%%%%%%%%%#*+=--::::::::::::::::::::::::::::
+..:::::::::::::::::::::::::::::::=*++*###*===++**##%%%%%%%%%####%%%#*=-:::::::::::::::::::::::::::::
+....:..::::::::::::::::::::::::::+++**#*-----===++**#%%%%###**++*#%%#+=-::::::::::::::::::::::::::::
+...::.::.::::::..:::::::.::::::::==*##*::-------==++**####***++++++#%%#*=:::::::::::::::::::::::::::
+..:::::::::::::.::::::::::::::::-+*##+:::::::----===++++++++++++++++#%%##=-:::::::::::::::::::::::::
+::::::::::::::::::::::::::::::--=*##*-::--------========++++++++++++*%%%%#+-:::::::::::::::::::::::-
+:::::::::::::::::::::::::::::-=*####=-=**###**+==++==++++******+++++*#%%%%#+-:::::::::::::::::::::::
+:::::::::::::::::::::::::::::+*####*=====+***#**+=-=+**###%%%%%%#*++*#%@@%%%#=-:::::::::::::::::::-:
+:::::::::::::::::::::::::::::-+####=-==--=+*****=::-+*##%%%%#####%#**%@@@@%%#*+:::::::::::::::::::::
+::::.:::::::::::::::::::::::::-*##+--=-+*####**+-:-=+*#%%%%###*#####*#@@@@@%#+*-::::::::::::::::::::
+.::..:::::::::::::::::::::::::-*#*::-=+**####*=-::-=+*##%%%%%%##*##***%@@@@%%#+:::::::::::::::::::::
+::::::::::::::::::::::::::::::=+*-::::-===+==--::-==+**##%##%%%%%##***%@@@@%%+::::::::::::::::::::::
+..:::::::::::::::::::::::::::::++:::::::---:::---=++++******######***+#@@@@%#*+-::::::::::::::::::::
+:.:::::::::::::::::::::::::::::+-::::::::::::-==+*********++++++++++++*%%@@%%*-=::::::::::::::::::::
+::::::::::::::::::::::::::::::-+-:::::::::---+#*+*#%%****+++++++++++++*%%%#%%+-:::::::::::::::::::::
+:::::::::::::::::::::::::::::::--::::::::----===+*#####**++++++++*++++#%%#*=+*-:::::::::::::::::::::
+::::::::::::::::::::::::::::::::::::::::::---==+++*##***++++++++**++++#%##+==-::::::::::::::::::::::
+::::::::::::::::::::::::::::::::-::::::----=+++++*******++++++++**++++##*#=:::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::-:::::-===++++***#####******+++++**+++##*=::::::::::::::::::::::::::
+::::::::=:::::::::::::::::::::::::::::-==--===++++***######***++***++**+=:::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::---------=++*********************+***=::::::::::::::::::::::::::::
+::::::::::::::::::::::::::::::::::--------==+++**********************--:::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::---------=====++++*************+=-:::::::::::::::::::::::::::::::
+:::::::::::::::::::::-::::::::::::::----------====+++*************#=::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::-========+++++*************+*+-::::::::::::::::::::::::::::::::
+:::::::::::::::::::::::::::::::::::::-=++++++++++******######***++-::::::::::::::::--:::::::::::::::
+::::::::::::::::::::::::::::::::::-=-:-+*********###########****+#+-::::-:----:::---::::::-:::::::::
+:::::::::::::::::::::::::::::::=+***-:--=+**###############******%%%#+-:----------------:--::::-::::
+-:::::::::::::::::::::::::::-+**####:::---=++****###*************%%%%%#=-------------------::-:-::::
+:::::::::::::::::::::::::-=***#####*:::-----=+++*****************%%%%%%%+--:-------------:::-:::::-:
+::::::::::::::::::::::::=****#####*-:::------==++****************%%%%%%%%*-----------------:--::----
+:::::::-++=-::::::::::=****######+--:::-------==+****************%%%%%%%%%#*=-----------------------
+:::::::+*****************####***==-::::--------=+++++++++*******##%%%%%%%%%%%%%#*+=-----------------
+:::::::+****************###****==+-:::------====++++++++++******##%%%%%%%%%%%%%%%%%%##*+=-----------
+:::::::+**********************==*+-::------=====++====++++++****##%%%%%%%%%%%%%%%%%%%%%%%%#*+=------
+:::::::=*********************=+**=-::-----=============++++++****#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*=---
+::--==+*******************#+==+*+-::::::---====------==++++++++**##%#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%=-
++************************#*---++-:::::::::-===--------=====+++++*###%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%#*
+****************#******##*=---=-:::::::::---=--:::::----========*###%%%%%%%%%%%%%%%%%%%%%%%%%%@@%%%%
+**********#######******#*+-:-==-:::::::-------::::::-------===-=####%%%%%%%%%%%%%%%%%%%%%%%%@@@@@@%%
+********#########*****##*+:--=+-::::-------:::::::::-----------+######%%%%%%%%%%%%%%%%%%%%@@@@@@@@@@
+################****####*-----+=--:-------:::::::::------------+######%%%%%%%%%%%%%%%%%%%%%%%@@@@@@@
+################**#####*=-::--==--:::::::::::::::::------------*#######%%%%%%%%%%%%%%%%%%%%%%%%%@@@@
+######################*+-:::--===-:::::::::::::::::-----------=*#######%%%%%%%%%%%%%%%%%%%%%%%@%@%@@
+#####################**=-:::--===--::::::::::::::---------===-=*#######%%%%%%%%%%%%%%%%%%%%%%%%%@@@@ 
+         Qiyas Sadiqov
+        `
+        };
+
+        // Custom user added commands storage
+        const CUSTOM_COMMANDS = {};
+
+        function getTimestamp() {
+            const now = new Date();
+            return now.toLocaleTimeString('en-US', { hour12: false });
+        }
+
+        function addLine(content, type = 'normal') {
+            const div = document.createElement('div');
+            div.className = 'line';
+            
+            let badgeHtml = '';
+            if (type !== 'normal') {
+                badgeHtml = `<span class="badge badge-${type}">${type.toUpperCase()}</span>`;
+            }
+
+            div.innerHTML = `<span class="ts">${getTimestamp()}</span>${badgeHtml}<span class="content-text">${content}</span>`;
+            
+            const inputContainer = document.getElementById(inputContainerId);
+            if (inputContainer) {
+                terminalBody.insertBefore(div, inputContainer);
+            } else {
+                terminalBody.appendChild(div);
+            }
+            
+            scrollToBottom();
+        }
+
+        // Boot Sequence
+        const bootSequence = [
+            { type: 'info', text: `Initializing <span class="highlight-text">${DATA.config.systemName}</span>...`, delay: 300 },
+            { type: 'info', text: 'Loading product configuration from <span class="path">/etc/qiyas/config.json</span>', delay: 700 },
+            { type: 'success', text: 'Connected to secure server.', delay: 1400 },
+            { type: 'normal', text: '<br><span class="highlight-text">Welcome to the system.</span>', delay: 1600 },
+            { type: 'normal', text: `I am Qiyas Sadiqov, ${DATA.config.role}.`, delay: 1700 },
+            { type: 'normal', text: 'Type <span class="cmd-keyword">q --help</span> to see available commands.<br>', delay: 1800 }
+        ];
+
+        function createInput() {
+            const inputContainer = document.createElement('div');
+            inputContainer.id = inputContainerId;
+            inputContainer.className = 'input-line';
+            inputContainer.innerHTML = `
+                <span class="prompt">➜  <span>~</span></span>
+                <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
+            `;
+            terminalBody.appendChild(inputContainer);
+
+            const input = document.getElementById('cmd-input');
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    const command = this.value.trim();
+                    this.value = '';
+                    handleCommand(command);
+                }
+            });
+            input.focus();
+        }
+
+        function handleCommand(cmd) {
+            // Echo command
+            const userCmdDiv = document.createElement('div');
+            userCmdDiv.className = 'line';
+            userCmdDiv.innerHTML = `<span class="ts">${getTimestamp()}</span><span class="prompt">➜  <span>~</span></span> <span class="highlight-text">${cmd}</span>`;
+            
+            const inputContainer = document.getElementById(inputContainerId);
+            terminalBody.insertBefore(userCmdDiv, inputContainer);
+
+            const cleanCmd = cmd.trim();
+            const lowerCmd = cleanCmd.toLowerCase();
+
+            setTimeout(() => {
+                if (cleanCmd === '') return;
+                
+                // --- CUSTOM COMMAND CREATION: addcommand ---
+                if (lowerCmd.startsWith('addcommand')) {
+                    const parts = cleanCmd.split(' ');
+                    if (parts.length < 3) {
+                        addLine('Usage: addcommand <name> <output>', 'error');
+                    } else {
+                        const newCmdName = parts[1].toLowerCase();
+                        // Rejoin the rest of the string as the output
+                        const newCmdOutput = parts.slice(2).join(' ');
+                        
+                        // Prevent overwriting internal logic triggers (basic safety)
+                        if (['clear', 'addcommand', 'q'].includes(newCmdName)) {
+                             addLine(`Cannot overwrite system command '${newCmdName}'.`, 'error');
+                        } else {
+                            CUSTOM_COMMANDS[newCmdName] = newCmdOutput;
+                            addLine(`Command <span class="cmd-keyword">${newCmdName}</span> added successfully.`, 'success');
+                        }
+                    }
+                    scrollToBottom();
+                    return;
+                }
+                
+                // --- VISUALIZE LOGIC ---
+                if (lowerCmd === 'q --visualize') {
+                    addLine('Rendering ASCII representation...', 'info');
+                    setTimeout(() => {
+                        const asciiDiv = document.createElement('div');
+                        asciiDiv.className = 'ascii-art';
+                        asciiDiv.textContent = DATA.asciiArt;
+                        
+                        // Insert before input
+                        const inp = document.getElementById(inputContainerId);
+                        terminalBody.insertBefore(asciiDiv, inp);
+                        scrollToBottom();
+                    }, 500);
+                    return;
+                }
+
+                if (lowerCmd === 'clear') {
+                    const inputs = document.getElementById(inputContainerId);
+                    terminalBody.innerHTML = '';
+                    terminalBody.appendChild(inputs);
+                    document.getElementById('cmd-input').focus();
+                    return;
+                }
+
+                // --- DATA DRIVEN COMMANDS ---
+                
+                if (lowerCmd === 'q --help' || lowerCmd === 'q --h') {
+                    addLine('<span class="dim">--- Available Commands ---</span>');
+                    // System commands from DATA
+                    DATA.help.forEach(item => {
+                        addLine(`<span class="cmd-keyword" style="display:inline-block; width:130px;">${item.cmd}</span> <span class="dim">::</span> ${item.desc}`);
+                    });
+                    // Custom commands
+                    const customKeys = Object.keys(CUSTOM_COMMANDS);
+                    if (customKeys.length > 0) {
+                        addLine('<span class="dim">--- Custom Commands ---</span>');
+                        customKeys.forEach(key => {
+                            addLine(`<span class="cmd-keyword" style="display:inline-block; width:130px;">${key}</span> <span class="dim">::</span> User defined`);
+                        });
+                    }
+                }
+                else if (lowerCmd === 'q about') {
+                    DATA.about.forEach((line, index) => {
+                         // Add slight delay between lines for effect if desired, or just print
+                         addLine(line, index === 0 ? 'success' : 'normal');
+                    });
+                }
+                else if (lowerCmd === 'q skills') {
+                     DATA.skills.forEach(skill => {
+                         addLine(`${skill.category.padEnd(9)} : ${skill.items}`);
+                     });
+                }
+                else if (lowerCmd === 'q projects') {
+                    addLine('Loading product portfolio...', 'warn');
+                    setTimeout(() => {
+                         DATA.projects.forEach((proj, index) => {
+                             addLine(`${index + 1}. <a href="${proj.link}" target="_blank">${proj.title}</a> ${proj.desc}`);
+                         });
+                    }, 600);
+                }
+                else if (lowerCmd === 'q social') {
+                    addLine('Fetching social links...', 'info');
+                    setTimeout(() => {
+                        DATA.social.forEach(social => {
+                            addLine(`${social.platform.padEnd(9)}: <a href="${social.link}" target="_blank">${social.username}</a>`);
+                        });
+                    }, 400);
+                }
+                else if (lowerCmd === 'q contact') {
+                    addLine(`Email: <a href="mailto:${DATA.contact.email}">${DATA.contact.email}</a>`);
+                }
+                else if (lowerCmd.startsWith('sudo')) {
+                    addLine('Permission denied: Administrator privileges required.', 'error');
+                }
+                else if (CUSTOM_COMMANDS[lowerCmd]) {
+                    // Execute custom user command
+                    addLine(CUSTOM_COMMANDS[lowerCmd], 'success');
+                }
+                else {
+                    addLine(`Command not found: <span class="highlight-text">${cmd}</span>`, 'error');
+                    addLine(`Type <span class="cmd-keyword">q --help</span> for help.`);
+                }
+                
+                scrollToBottom();
+            }, 150);
+
+            scrollToBottom();
+        }
+
+        async function init() {
+            // Run boot sequence using DATA where applicable
+            for (let step of bootSequence) {
+                await new Promise(r => setTimeout(r, step.delay));
+                addLine(step.text, step.type);
+            }
+            createInput();
+        }
+
+        function scrollToBottom() {
+            terminalBody.scrollTop = terminalBody.scrollHeight;
+        }
+
+        function focusInput() {
+            const input = document.getElementById('cmd-input');
+            if (input) input.focus();
+        }
+
+        window.onload = init;
+
+    </script>
 </body>
 </html>
