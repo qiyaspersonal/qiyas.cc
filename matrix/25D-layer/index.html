@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix 3D Volumetric World</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        #ui-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #0f0;
+            z-index: 10;
+            pointer-events: none;
+            background: rgba(0, 20, 0, 0.6);
+            padding: 15px;
+            border: 1px solid #0f0;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+        }
+        h1 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            text-shadow: 0 0 5px #0f0;
+            letter-spacing: 2px;
+        }
+        p {
+            font-size: 12px;
+            margin: 5px 0;
+            color: #8f8;
+        }
+        #file-input {
+            pointer-events: auto;
+            margin-top: 10px;
+            color: white;
+            font-size: 12px;
+        }
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0f0;
+            font-size: 24px;
+            display: none;
+            text-align: center;
+            text-shadow: 0 0 10px #0f0;
+            z-index: 20;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border: 1px solid #0f0;
+        }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.3; } }
+    </style>
+    <!-- Three.js and Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+</head>
+<body>
+
+    <div id="ui-container">
+        <h1>MATRIX ARCHITECT V2</h1>
+        <p>Volumetric 3D Data Visualization</p>
+        <p>Drag or select an image:</p>
+        <input type="file" id="file-input" accept="image/*">
+    </div>
+
+    <div id="loader" class="blink">PROCESSING DATA...<br>Initializing Volumetric Construction...</div>
+    <div id="canvas-container"></div>
+
+    <!-- Vertex Shader -->
+    <script type="x-shader/x-vertex" id="vertexShader">
+        uniform float uTime;
+        uniform float uSize;
+        uniform vec3 uMouse;
+        uniform float uMouseRadius;
+        uniform float uMouseStrength;
+        
+        // Attributes are now calculated in JS but we keep them here for the shader logic
+        attribute float aScale;
+        attribute float aBrightness;
+        attribute float aRandom;
+        attribute float aSpeed; // Fall speed of each particle
+        
+        varying float vBrightness;
+        varying float vRandom;
+        varying float vDist;
+        varying float vAlpha;
+
+        void main() {
+            vBrightness = aBrightness;
+            vRandom = aRandom;
+
+            vec3 newPos = position;
+
+            // --- Digital Rain Movement (Continuous Fall) ---
+            // Simulation of continuous downward sliding on the Y axis
+            // Using modulo to create an infinite loop
+            float fallOffset = mod(uTime * aSpeed * 20.0, 400.0); 
+            // newPos.y -= fallOffset; // Optional: Actually make them fall?
+            // For now, we are animating the texture, keeping position fixed.
+
+            // --- Mouse Interaction (3D Spherical Repulsion) ---
+            float dist = distance(newPos, uMouse);
+            vDist = dist;
+            
+            float force = smoothstep(uMouseRadius, 0.0, dist);
+            
+            // Push outwards from mouse center
+            vec3 dir = normalize(newPos - uMouse);
+            newPos += dir * force * uMouseStrength;
+
+            // --- Ripple (Liveness feel) ---
+            newPos.x += sin(uTime + newPos.y * 0.05) * 2.0;
+
+            vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
+            
+            // Perspective sizing
+            gl_PointSize = uSize * aScale * (500.0 / -mvPosition.z);
+            
+            // Fade out if too close to camera (Prevent clipping artifacts)
+            vAlpha = smoothstep(5.0, 20.0, -mvPosition.z);
+
+            gl_Position = projectionMatrix * mvPosition;
+        }
+    </script>
+
+    <!-- Fragment Shader -->
+    <script type="x-shader/x-fragment" id="fragmentShader">
+        uniform float uTime;
+        uniform vec3 uColor1; // Bright Green
+        uniform vec3 uColor2; // Dark Green
+        uniform sampler2D uTexture;
+        
+        varying float vBrightness;
+        varying float vRandom;
+        varying float vDist;
+        varying float vAlpha;
+
+        void main() {
+            // Square particle instead of round (Matrix character)
+            vec2 uv = gl_PointCoord;
+
+            // Character Selection (Animated)
+            // Characters change over time (like Matrix code)
+            float charChangeSpeed = 5.0;
+            float charIndex = floor(mod(vRandom * 100.0 + uTime * charChangeSpeed, 16.0)); 
+            
+            float col = mod(charIndex, 4.0);
+            float row = floor(charIndex / 4.0);
+            vec2 atlasUV = (uv + vec2(col, row)) / 4.0;
+            
+            vec4 texColor = texture2D(uTexture, atlasUV);
+
+            // Don't draw if the character itself is empty
+            if (texColor.r < 0.1) discard;
+
+            // Color Calculation
+            // Higher vBrightness = uColor1 (bright), Lower = uColor2 (dark)
+            vec3 baseColor = mix(uColor2, uColor1, vBrightness);
+            
+            // Rain Effect (Glint moves top to bottom)
+            // We can't access position.y easily here, but we can use vRandom or gl_FragCoord.
+            // Here we simply add a time-based blink
+            float glint = sin(uTime * 5.0 + vRandom * 20.0);
+            if(glint > 0.9) baseColor += vec3(0.5); // White glint
+
+            // Glow where mouse interaction happens
+            float interaction = smoothstep(50.0, 0.0, vDist);
+            baseColor = mix(baseColor, vec3(1.0), interaction);
+
+            // Opacity
+            float alpha = texColor.r * vAlpha * 0.8; // Slightly transparent
+            
+            gl_FragColor = vec4(baseColor, alpha);
+        }
+    </script>
+
+    <script>
+        // --- Variables ---
+        let scene, camera, renderer, particles, material, geometry;
+        let raycaster, mouse, plane;
+        let controls;
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let animationId;
+        
+        // Settings
+        const settings = {
+            particleSize: 15.0,
+            extrusion: 150.0, // Volume thickness
+            density: 3,       // Layers per pixel (Depth density)
+            mouseRadius: 100.0,
+            mouseStrength: 80.0,
+            rainSpeed: 1.0,
+            color1: [50, 255, 100],
+            color2: [0, 50, 0],
+            bgColor: [0, 5, 0],
+            ambientParticles: 5000 // Random ambient particles
+        };
+
+        function init() {
+            // Scene
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000500);
+            scene.fog = new THREE.FogExp2(0x000500, 0.0008); // Darken distance
+
+            // Camera (Angled view)
+            camera = new THREE.PerspectiveCamera(60, width / height, 1, 5000);
+            camera.position.set(0, -100, 600); // Slightly from below/angled
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.autoRotate = true; // Rotate slightly to show off 3D
+            controls.autoRotateSpeed = 0.5;
+
+            // Interaction
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+            
+            // GUI
+            setupGUI();
+
+            // Create Texture and Start
+            createMatrixTexture().then(texture => {
+                window.matrixTexture = texture;
+                generateNoiseImage(); // Initial launch
+            });
+
+            // Events
+            window.addEventListener('resize', onResize);
+            document.addEventListener('mousemove', onMouseMove);
+            
+            // Drag Drop
+            const dropZone = document.body;
+            dropZone.addEventListener('dragover', (e) => e.preventDefault());
+            dropZone.addEventListener('drop', handleFileSelect);
+            document.getElementById('file-input').addEventListener('change', handleFileSelect);
+
+            animate();
+        }
+
+        // --- Matrix Font Texture ---
+        function createMatrixTexture() {
+            return new Promise((resolve) => {
+                const size = 512;
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // 4x4 Grid
+                const rows = 4;
+                const cols = 4;
+                const charW = size / cols;
+                const charH = size / rows;
+                
+                ctx.fillStyle = 'black';
+                ctx.fillRect(0, 0, size, size);
+                
+                // Character Set (Katakana and Numbers)
+                const chars = "ﾊﾐﾋｰｳｼﾅﾓﾆｻﾜﾂｵﾘｱﾎﾃﾏｹﾒｴｶｷﾑﾕﾗｾﾈｽﾀﾇﾍｦｲｸｺ123457890:・.=*+-<>¦｜";
+                
+                ctx.font = 'bold ' + (charH * 0.8) + 'px monospace';
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = 'white';
+
+                for(let y=0; y<rows; y++) {
+                    for(let x=0; x<cols; x++) {
+                        const char = chars[Math.floor(Math.random() * chars.length)];
+                        const cX = x * charW + charW/2;
+                        const cY = y * charH + charH/2;
+                        ctx.fillText(char, cX, cY);
+                    }
+                }
+                
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.magFilter = THREE.NearestFilter;
+                texture.minFilter = THREE.LinearFilter;
+                resolve(texture);
+            });
+        }
+
+        // --- Image Processing and 3D Generation ---
+        function handleFileSelect(e) {
+            e.preventDefault();
+            controls.autoRotate = false; // Stop rotation when user loads file
+            const file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => processImage(img);
+                img.src = ev.target.result;
+            };
+            document.getElementById('loader').style.display = 'block';
+            reader.readAsDataURL(file);
+        }
+
+        function generateNoiseImage() {
+            // Initial data
+            const size = 150;
+            const data = new Uint8ClampedArray(size * size * 4);
+            for(let i=0; i<data.length; i+=4) {
+                const val = Math.random() > 0.8 ? Math.random() * 255 : 0;
+                data[i] = data[i+1] = data[i+2] = val;
+                data[i+3] = 255;
+            }
+            createVolumetricCloud(data, size, size);
+        }
+
+        function processImage(img) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Downsample (For performance)
+            // Volumetric data means many particles, so we reduce resolution slightly
+            const maxSize = 256; 
+            let w = img.width;
+            let h = img.height;
+            
+            if (w > h && w > maxSize) { h *= maxSize/w; w = maxSize; }
+            else if (h > maxSize) { w *= maxSize/h; h = maxSize; }
+            
+            w = Math.floor(w);
+            h = Math.floor(h);
+
+            canvas.width = w;
+            canvas.height = h;
+            ctx.drawImage(img, 0, 0, w, h);
+            
+            const imgData = ctx.getImageData(0, 0, w, h);
+            createVolumetricCloud(imgData.data, w, h);
+            
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        function createVolumetricCloud(data, w, h) {
+            if (particles) scene.remove(particles);
+
+            // Estimated total particles
+            // settings.density layers per pixel + ambient particles
+            const pixelCount = w * h;
+            const totalParticles = (pixelCount * settings.density) + settings.ambientParticles;
+
+            const positions = new Float32Array(totalParticles * 3);
+            const scales = new Float32Array(totalParticles);
+            const brightnessArr = new Float32Array(totalParticles);
+            const randoms = new Float32Array(totalParticles);
+            const speeds = new Float32Array(totalParticles);
+
+            let idx = 0;
+
+            // 1. Create Volume from Image Data
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    const i = (y * w + x) * 4;
+                    const r = data[i];
+                    const g = data[i+1];
+                    const b = data[i+2];
+                    
+                    const bright = (r*0.299 + g*0.587 + b*0.114) / 255.0; // 0.0 - 1.0
+
+                    // Only create if bright enough
+                    if (bright > 0.1) {
+                        // Original XY Position (Centered)
+                        const posX = (x - w/2) * 2.0; // Expand slightly
+                        const posY = -(y - h/2) * 2.0;
+
+                        // Extrude along Z Axis
+                        // Higher brightness = more layers or "taller" structure
+                        const layers = Math.max(1, Math.floor(bright * settings.density));
+                        
+                        for (let k = 0; k < layers; k++) {
+                            // Z depth: Brightness brings it forward
+                            // Also add slight randomness so it doesn't look like a solid block
+                            const zOffset = (k / settings.density) * settings.extrusion * bright;
+                            const zBase = (bright - 0.5) * 100.0; // General depth position
+
+                            positions[idx*3]     = posX + (Math.random()-0.5)*2.0;
+                            positions[idx*3 + 1] = posY + (Math.random()-0.5)*2.0;
+                            positions[idx*3 + 2] = zBase + zOffset + (Math.random() * 20); // Slight scatter
+
+                            scales[idx] = 1.0;
+                            // Layers in the back should be dimmer
+                            brightnessArr[idx] = bright * (1.0 - (k / layers)*0.5); 
+                            randoms[idx] = Math.random();
+                            speeds[idx] = 0.5 + Math.random(); // Fall speed
+
+                            idx++;
+                        }
+                    }
+                }
+            }
+
+            // 2. Ambient Particles (Ambient Space Dust)
+            // Random codes distributed around the image
+            const bounds = Math.max(w, h) * 3;
+            for (let i = idx; i < totalParticles; i++) {
+                positions[i*3]     = (Math.random() - 0.5) * bounds * 2; // Wide area
+                positions[i*3 + 1] = (Math.random() - 0.5) * bounds * 2;
+                positions[i*3 + 2] = (Math.random() - 0.5) * 1000; // Very wide depth distribution
+
+                scales[i] = 0.5 + Math.random() * 0.5;
+                brightnessArr[i] = 0.1 + Math.random() * 0.3; // Dim ambient light
+                randoms[i] = Math.random();
+                speeds[i] = 0.2 + Math.random() * 0.5;
+            }
+
+            geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+            geometry.setAttribute('aBrightness', new THREE.BufferAttribute(brightnessArr, 1));
+            geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+            geometry.setAttribute('aSpeed', new THREE.BufferAttribute(speeds, 1));
+
+            material = new THREE.ShaderMaterial({
+                uniforms: {
+                    uTime: { value: 0 },
+                    uSize: { value: settings.particleSize },
+                    uMouse: { value: new THREE.Vector3(9999, 9999, 9999) },
+                    uMouseRadius: { value: settings.mouseRadius },
+                    uMouseStrength: { value: settings.mouseStrength },
+                    uColor1: { value: new THREE.Color(settings.color1[0]/255, settings.color1[1]/255, settings.color1[2]/255) },
+                    uColor2: { value: new THREE.Color(settings.color2[0]/255, settings.color2[1]/255, settings.color2[2]/255) },
+                    uTexture: { value: window.matrixTexture }
+                },
+                vertexShader: document.getElementById('vertexShader').textContent,
+                fragmentShader: document.getElementById('fragmentShader').textContent,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+        }
+
+        function onMouseMove(event) {
+            // Find mouse position in 3D space with Raycasting
+            const mouseNDC = new THREE.Vector2(
+                (event.clientX / width) * 2 - 1,
+                -(event.clientY / height) * 2 + 1
+            );
+            
+            raycaster.setFromCamera(mouseNDC, camera);
+            
+            // Project mouse to a point at a certain distance in front of the camera
+            // Instead of a fixed plane, we select a dynamic point relative to the camera
+            const distance = 300; // Distance from camera
+            const target = new THREE.Vector3().copy(raycaster.ray.origin).add(raycaster.ray.direction.multiplyScalar(distance));
+            
+            if(material) {
+                material.uniforms.uMouse.value.copy(target);
+            }
+        }
+
+        function onResize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        }
+
+        function setupGUI() {
+            const gui = new dat.GUI();
+            
+            const f1 = gui.addFolder('Volume & Appearance');
+            f1.add(settings, 'particleSize', 1, 50).name('Code Size').onChange(v => material.uniforms.uSize.value = v);
+            f1.open();
+
+            const f2 = gui.addFolder('Physical Interaction');
+            f2.add(settings, 'mouseRadius', 10, 300).name('Interaction Radius').onChange(v => material.uniforms.uMouseRadius.value = v);
+            f2.add(settings, 'mouseStrength', 0, 300).name('Repulsion Force').onChange(v => material.uniforms.uMouseStrength.value = v);
+            f2.open();
+
+            const f3 = gui.addFolder('Colors');
+            f3.add(settings, 'rainSpeed', 0, 5).name('Code Speed');
+            f3.addColor(settings, 'color1').name('Bright Code').onChange(v => material.uniforms.uColor1.value.setRGB(v[0]/255, v[1]/255, v[2]/255));
+            f3.addColor(settings, 'color2').name('Dim Code').onChange(v => material.uniforms.uColor2.value.setRGB(v[0]/255, v[1]/255, v[2]/255));
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (material) {
+                material.uniforms.uTime.value += 0.01 * settings.rainSpeed;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
