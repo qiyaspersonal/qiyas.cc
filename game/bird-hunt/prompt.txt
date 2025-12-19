@@ -1,0 +1,45 @@
+Role: Act as a Senior Creative Developer and Computer Vision Engineer specializing in WebGL, Canvas API, and TensorFlow/MediaPipe.
+Objective: Create a fully functional, single-file HTML5 game that recreates the mechanics of "Duck Hunt" using computer vision for controls. The game must run entirely in the browser using the Webcam.
+Technical Constraints:
+Single File: The output must be a single index.html file containing all HTML, CSS, and JavaScript.
+No External Assets: Do not import images or audio files. Use procedural pixel art (2D arrays of color codes) for graphics and the Web Audio API for sound synthesis.
+Dependencies: Load @mediapipe/hands, @mediapipe/camera_utils, and @mediapipe/drawing_utils via CDN.
+Detailed Requirements:
+1. Visual Engine & Aesthetics (NES Style)
+Canvas: Use HTML5 Canvas for rendering at 60fps.
+Palette: Use the classic NES color palette (Sky Blue: #3FBFFF, Grass: #83D313, Dirt: #9C4A00).
+Procedural Sprites: Define 2D arrays (matrices) to represent pixel art for the Ducks (Fly, Up-flap, Hit, Dead/Falling). Render these by iterating through the arrays and drawing fillRect on the canvas.
+Environment: Draw a horizon line, a pixelated tree, and a bush using simple geometric shapes or procedural drawing functions.
+2. Core Gameplay Loop
+Spawning: Ducks enter from the sides at varying speeds and random vertical positions.
+Movement: Ducks bounce off the top and bottom of the play area (sky).
+Death State Machine (Crucial):
+State 1 (FLYING): Normal movement.
+State 2 (HIT): When shot, the duck freezes in place and flashes for ~0.5 seconds.
+State 3 (FALLING): The duck drops vertically with accelerating gravity. It should spin or change sprite.
+State 4 (GROUNDED): When it hits the bottom horizon, it stays there ("dead") for ~1 second, blinks, and then despawns.
+3. Computer Vision & Input System
+Hand Tracking: Use MediaPipe Hands. Mirror the webcam feed horizontally so movement feels natural.
+Cursor Mapping: Map the Index Finger Tip (Landmark 8) to the game crosshair. Apply Lerp (Linear Interpolation) to smooth out the jitter.
+Trigger Mechanics (The "Hammer" Logic):
+Calculate the normalized vertical distance between the Thumb Tip (Landmark 4) and the Thumb IP Joint (Landmark 3) relative to the hand size (Wrist to Middle Finger MCP).
+Ready State: Thumb is UP (Tip is significantly higher than the joint).
+Fire State: Thumb is DOWN (Tip drops to or below the joint level).
+Trigger a shot only on the transition from Ready to Fire.
+4. Game Modes (Toggleable)
+Implement a UI button to toggle between two modes:
+MANUAL Mode: The user must physically perform the thumb trigger gesture to shoot.
+AUTO Mode: The gun fires automatically whenever the crosshair overlaps with a duck's bounding box (add a small cooldown/fire-rate limit).
+5. Audio System (Web Audio API)
+Create a robust audio manager that initializes on the first user interaction (click) to bypass browser autoplay policies.
+Shoot Sound: Generate a short "Noise" or "Square Wave" burst with a rapid decay (retro pew-pew).
+Hit Sound: A high-pitched "Sawtooth" beep.
+Thud Sound: A low-frequency noise when the duck hits the ground.
+6. User Interface (HUD)
+Loading Screen: Show a "Click to Start" overlay to handle camera permissions and audio context start.
+In-Game HUD: Display Score, Round, and the Mode Toggle Button.
+Feedback: Show visual indicators (colored dots) in the corner for "Hand Detected" and "Hammer Cocked" states to help the user learn the controls.
+Code Structure:
+Write clean, modular code using ES6 classes (class Duck, class Game, etc.).
+Handle window resizing gracefully.
+Ensure the code is complete and runnable immediately.
