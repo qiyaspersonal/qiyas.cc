@@ -1,0 +1,19 @@
+Context:
+Create a web-based "ASCII Camera Mirror" application that converts a live webcam feed into real-time ASCII art characters. The application should be a single-file solution (HTML, CSS, JS) with a modern, dark-themed UI.
+Core Functionality:
+Camera Access & Initialization: Start with an overlay screen titled "CC ASCII Mirror" and a prominent "START CAMERA" button. Upon clicking, request camera permissions using getUserMedia.
+Live ASCII Rendering: * Capture video frames and draw them onto a hidden canvas.
+Map the brightness of each pixel to a string of ASCII characters (from densest to lightest).
+The ASCII output must be rendered inside a centered container with a monospaced font.
+Mirror Effect: The video processing must be fixed in "Mirror Mode" (horizontally flipped) so it acts like a physical mirror. This setting should not be changeable by the user.
+Real-time Controls:
+Color Picker: Place a color input in the top-left corner. When the user selects a color, the ASCII text color should update instantly. The default color must be White (#FFFFFF).
+Resolution Toggle: Include a button to switch between "Low" and "High" resolution. In High resolution, increase the character count and decrease the font size for more detail.
+Copy Function: A "Copy Text" button that copies the current ASCII frame (as plain text) to the user's clipboard.
+Technical Constraints & UI/UX:
+Language: All UI elements, buttons, and messages must be in English.
+Performance: Optimize the rendering loop using requestAnimationFrame. Use a scale factor (around 0.55) to compensate for the rectangular aspect ratio of monospaced characters to prevent the image from looking stretched.
+Aesthetics: * Background: Solid Black (#000000).
+Fonts: Monospace (e.g., 'Courier New').
+Responsive Design: Ensure the ASCII container fills the screen and the controls are easily accessible on both mobile and desktop.
+No external libraries: Use vanilla JavaScript and CSS only.
