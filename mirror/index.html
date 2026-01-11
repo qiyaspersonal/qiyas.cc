@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CC ASCII Mirror</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            color: #ffffff; /* Default White */
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Initial overlay for camera permission */
+        #permission-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        #permission-overlay h1 {
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        #start-btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            background: #ffffff;
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        #start-btn:hover {
+            transform: scale(1.05);
+            background: #e0e0e0;
+        }
+
+        #ascii-container {
+            font-size: 10px;
+            line-height: 8px;
+            white-space: pre;
+            text-align: center;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            cursor: default; 
+            user-select: none;
+        }
+
+        /* Color Picker Area (Top Left) */
+        #color-picker-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        #color-input {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        /* Controls Panel (Bottom) */
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            z-index: 10;
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            visibility: hidden; /* Only show after start */
+        }
+
+        button.ui-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #222;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.2s;
+            min-width: 120px;
+        }
+
+        button.ui-btn:hover {
+            background: #333;
+            border-color: #666;
+        }
+
+        /* Hidden processing elements */
+        video, canvas {
+            display: none;
+        }
+
+        #error-msg {
+            display: none;
+            color: #ff4444;
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Camera Permission Screen -->
+    <div id="permission-overlay">
+        <h1>CC ASCII Mirror</h1>
+        <p style="color: #888; margin-bottom: 30px;">Camera access is required for the ASCII effect.</p>
+        <button id="start-btn" onclick="requestCamera()">START CAMERA</button>
+        <div id="error-msg"></div>
+    </div>
+
+    <!-- Color Picker (Top Left) -->
+    <div id="color-picker-container">
+        <input type="color" id="color-input" value="#ffffff">
+        <span style="font-weight: bold;">COLOR</span>
+    </div>
+
+    <!-- ASCII Output -->
+    <div id="ascii-container"></div>
+
+    <!-- Processing -->
+    <video id="video" autoplay playsinline></video>
+    <canvas id="canvas"></canvas>
+
+    <!-- Bottom Controls -->
+    <div id="controls">
+        <button class="ui-btn" id="toggle-res" onclick="toggleResolution()">Resolution: Low</button>
+        <button class="ui-btn" onclick="snapshot()">Copy Text</button>
+    </div>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const asciiContainer = document.getElementById('ascii-container');
+        const errorMsg = document.getElementById('error-msg');
+        const overlay = document.getElementById('permission-overlay');
+        const controls = document.getElementById('controls');
+        const colorInput = document.getElementById('color-input');
+
+        // ASCII Character set
+        const density = "Ñ@#W$9876543210?!abc;:+=-,._                    ";
+        
+        let isHighRes = false;
+        let animationId;
+
+        const resolutions = {
+            low: 100,
+            high: 160
+        };
+
+        // Kamerayı başlatma fonksiyonu (Butonla tetiklenir)
+        async function requestCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        facingMode: "user",
+                        width: { ideal: 640 },
+                        height: { ideal: 480 }
+                    }, 
+                    audio: false 
+                });
+                
+                video.srcObject = stream;
+                
+                video.onloadedmetadata = () => {
+                    video.play();
+                    // Giriş ekranını gizle ve arayüzü göster
+                    overlay.style.display = 'none';
+                    controls.style.visibility = 'visible';
+                    processVideo();
+                };
+            } catch (err) {
+                console.error("Camera access error:", err);
+                errorMsg.style.display = 'block';
+                errorMsg.innerHTML = "Error: " + err.message + "<br>Please ensure camera permissions are granted in your browser settings.";
+                document.getElementById('start-btn').innerText = "TRY AGAIN";
+            }
+        }
+
+        function processVideo() {
+            const w = isHighRes ? resolutions.high : resolutions.low;
+            const h = Math.floor(video.videoHeight / video.videoWidth * w * 0.55);
+
+            canvas.width = w;
+            canvas.height = h;
+
+            // Mirror effect logic
+            ctx.save();
+            ctx.translate(w, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, w, h);
+            ctx.restore();
+
+            const imageData = ctx.getImageData(0, 0, w, h);
+            const pixels = imageData.data;
+
+            let asciiImage = "";
+
+            for (let i = 0; i < h; i++) {
+                for (let j = 0; j < w; j++) {
+                    const pixelIndex = (i * w + j) * 4;
+                    const r = pixels[pixelIndex];
+                    const g = pixels[pixelIndex + 1];
+                    const b = pixels[pixelIndex + 2];
+
+                    // Brightness calculation
+                    const avg = (r + g + b) / 3;
+
+                    const len = density.length;
+                    const charIndex = Math.floor(map(avg, 0, 255, len - 1, 0));
+
+                    const c = density.charAt(charIndex);
+                    
+                    if (c === " ") {
+                        asciiImage += "&nbsp;";
+                    } else {
+                        asciiImage += c;
+                    }
+                }
+                asciiImage += "<br/>";
+            }
+
+            asciiContainer.innerHTML = asciiImage;
+            animationId = requestAnimationFrame(processVideo);
+        }
+
+        function map(value, start1, stop1, start2, stop2) {
+            return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1));
+        }
+
+        // Color listener
+        colorInput.addEventListener('input', (e) => {
+            document.body.style.color = e.target.value;
+        });
+
+        // Resolution toggle
+        function toggleResolution() {
+            const btn = document.getElementById('toggle-res');
+            isHighRes = !isHighRes;
+            
+            if (isHighRes) {
+                asciiContainer.style.fontSize = "6px";
+                asciiContainer.style.lineHeight = "5px";
+                btn.innerText = "Resolution: High";
+            } else {
+                asciiContainer.style.fontSize = "10px";
+                asciiContainer.style.lineHeight = "8px";
+                btn.innerText = "Resolution: Low";
+            }
+        }
+
+        // Snapshot / Copy
+        function snapshot() {
+            const text = asciiContainer.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('button[onclick="snapshot()"]');
+                const originalText = btn.innerText;
+                btn.innerText = "Copied!";
+                setTimeout(() => btn.innerText = originalText, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
